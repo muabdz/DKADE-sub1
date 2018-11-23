@@ -1,4 +1,4 @@
-package com.dicoding.muadz.footballclub
+package com.dicoding.muadz.footballclub.apiUtils
 
 import java.net.URL
 
