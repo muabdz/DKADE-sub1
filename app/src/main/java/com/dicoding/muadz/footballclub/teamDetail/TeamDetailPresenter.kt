@@ -4,24 +4,27 @@ import com.dicoding.muadz.footballclub.TeamResponse
 import com.dicoding.muadz.footballclub.apiUtils.ApiRepository
 import com.dicoding.muadz.footballclub.apiUtils.TheSportDBApi
 import com.google.gson.Gson
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class TeamDetailPresenter(private val view: TeamDetailView,
-                          private val apiRepository: ApiRepository,
-                          private val gson: Gson) {
-    fun getTeamDetail(teamId: String){
+class TeamDetailPresenter(
+    private val view: TeamDetailView,
+    private val apiRepository: ApiRepository,
+    private val gson: Gson
+) {
+
+    fun getTeamDetail(teamId: String) {
         view.showLoading()
-        doAsync {
-            val data = gson.fromJson(apiRepository
-                .doRequest(TheSportDBApi.getTeamDetail(teamId)),
+        GlobalScope.launch(Dispatchers.Main) {
+            val data = gson.fromJson(
+                apiRepository
+                    .doRequest(TheSportDBApi.getTeamDetail(teamId)).await(),
                 TeamResponse::class.java
             )
+            view.hideLoading()
+            view.showTeamDetail(data.teams)
 
-            uiThread {
-                view.hideLoading()
-                view.showTeamDetail(data.teams)
-            }
         }
     }
 }

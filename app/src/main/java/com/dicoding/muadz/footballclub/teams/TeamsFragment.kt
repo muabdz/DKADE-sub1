@@ -86,6 +86,7 @@ class TeamsFragment: Fragment(), AnkoComponent<Context>, TeamsView {
                     lparams (width = matchParent, height = wrapContent)
 
                     listTeam = recyclerView {
+                        id = R.id.list_team
                         lparams (width = matchParent, height = wrapContent)
                         layoutManager = LinearLayoutManager(ctx)
                     }
